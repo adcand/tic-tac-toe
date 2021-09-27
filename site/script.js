@@ -54,10 +54,5 @@ function decideWin() {
   });
 }
 
-// 8 possible combinations you can win 
-// horizontally = area + 1 + 1
-// vertically = area + 3 + 3
-// diagnally = area + 4 + 4 or area + 2 + 2
-
 // TODO
 // . alternate the characters 
