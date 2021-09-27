@@ -19,19 +19,20 @@
 
 :root {
   font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .body {
   height: 100vh;
   width: 100vw;
-  background: #000;
+  background: #FAE8E0;
   position: relative;
 }
 
 .board {
   height: min(40%, 20rem);
   width: min(70%, 20rem);
-  background: #000;
+  background: transparent;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 0.1rem;
@@ -40,12 +41,12 @@
 .position {
   height: 100%;
   width: 100%;
-  background: #111;
+  background: #B6E2D3;
   cursor: pointer;
   transition: 100ms;
 }
 .position:hover {
-  background: #141414;
+  background: #b8ddd1;
 }
 
 .x {
@@ -56,7 +57,7 @@
   position: absolute;
   width: 4%;
   height: 50%;
-  background: #fff;
+  background: #D8A7B1;
 }
 .x::before {
   content: "";
@@ -79,11 +80,13 @@
   width: 50%;
   border-radius: 50%;
   background: transparent;
-  border: solid thick #fff;
+  border: solid thick #D8A7B1;
 }
 
 .winner {
-  color: #fff;
+  font-size: 1rem;
+  color: #444;
   position: absolute;
   bottom: 1rem;
+  font-weight: 700;
 }

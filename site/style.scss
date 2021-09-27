@@ -1,13 +1,20 @@
 @use "../abstracts/index" as *;
 
+$board--clr: #B6E2D3;
+$board-hover--clr: #b8ddd1;
+$bg--clr: #FAE8E0;
+$character--clr: #D8A7B1;
+$font--clr: #444;
+
 :root {
   font-size: 20px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .body {
   height: 100vh;
   width: 100vw;
-  background: #000;
+  background: $bg--clr;
   @extend %flex-center;
   position: relative;
 }
@@ -15,7 +22,7 @@
 .board {
   height: min(40%, 20rem);
   width: min(70%, 20rem);
-  background: #000;
+  background: transparent;
   @extend %grid-center;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -25,13 +32,13 @@
 .position {
   height: 100%;
   width: 100%;
-  background: #111;
+  background: $board--clr;
   cursor: pointer;
   transition: 100ms;
   @extend %flex-center;
 
   &:hover {
-    background: rgb(20, 20, 20);
+    background: $board-hover--clr;
   }
 }
 
@@ -41,7 +48,7 @@
   @include pseudo-both() {
     width: 4%;
     height: 50%;
-    background: #fff;
+    background: $character--clr;
   }
 
   @include pseudo($loc: before) {
@@ -55,18 +62,20 @@
 
 .circle {
   position: relative;
-
+  
   @include pseudo() {
     height: 50%;
     width: 50%;
     border-radius: 50%;
     background: transparent;
-    border: solid thick #fff;
+    border: solid thick $character--clr;
   }
 }
 
 .winner {
-  color: #fff;
+  font-size: 1rem;
+  color: $font--clr;
   position: absolute;
   bottom: 1rem;
+  font-weight: $bold;
 }
