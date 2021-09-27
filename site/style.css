@@ -1,0 +1,89 @@
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.body, .position {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board {
+  display: grid;
+  place-items: center;
+}
+
+:root {
+  font-size: 20px;
+}
+
+.body {
+  height: 100vh;
+  width: 100vw;
+  background: #000;
+  position: relative;
+}
+
+.board {
+  height: min(40%, 20rem);
+  width: min(70%, 20rem);
+  background: #000;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.1rem;
+}
+
+.position {
+  height: 100%;
+  width: 100%;
+  background: #111;
+  cursor: pointer;
+  transition: 100ms;
+}
+.position:hover {
+  background: #141414;
+}
+
+.x {
+  position: relative;
+}
+.x::before, .x::after {
+  content: "";
+  position: absolute;
+  width: 4%;
+  height: 50%;
+  background: #fff;
+}
+.x::before {
+  content: "";
+  position: absolute;
+  transform: rotate(45deg);
+}
+.x::after {
+  content: "";
+  position: absolute;
+  transform: rotate(-45deg);
+}
+
+.circle {
+  position: relative;
+}
+.circle::after {
+  content: "";
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  border-radius: 50%;
+  background: transparent;
+  border: solid thick #fff;
+}
+
+.winner {
+  color: #fff;
+  position: absolute;
+  bottom: 1rem;
+}

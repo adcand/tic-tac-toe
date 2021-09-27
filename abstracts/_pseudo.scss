@@ -1,0 +1,15 @@
+@mixin pseudo($loc: after, $cont: "", $pos: absolute) {
+  &::#{$loc} {
+    content: $cont;
+    position: $pos;
+    @content;
+  }
+}
+
+@mixin pseudo-both($cont: "", $pos: absolute) {
+  &::before, &::after {
+    content: $cont;
+    position: $pos;
+    @content;
+  }
+}
