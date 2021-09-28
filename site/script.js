@@ -23,7 +23,7 @@ let winPossibilities = [
   ["b3", "b5", "b7"]
 ];
 
-!(function setCharacter() {
+(function setCharacter() {
   let randomValue = Math.random();
   let circleSelected = randomValue > 0.5;
 
@@ -70,4 +70,4 @@ function decideWin() {
 }
 
 // TODO
-// . alternate the characters 
+// . Decide character winner
