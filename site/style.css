@@ -46,7 +46,7 @@
   transition: 100ms;
 }
 .position:hover {
-  background: #b8ddd1;
+  background: #a5d1c6;
 }
 
 .x {
@@ -85,7 +85,7 @@
 
 .winner {
   font-size: 1rem;
-  color: #444;
+  color: #7a607c;
   position: absolute;
   bottom: 1rem;
   font-weight: 700;

@@ -4,6 +4,7 @@ const positions = Array.from(getPositions);
 
 positions.forEach(area => area.addEventListener("click", addCharacter));
 
+let isCircle = false;
 let thereIsAWin = false;
 let positionsUsed = [];
 let winPossibilities = [
@@ -22,14 +23,28 @@ let winPossibilities = [
   ["b3", "b5", "b7"]
 ];
 
+!(function setCharacter() {
+  let randomValue = Math.random();
+  let circleSelected = randomValue > 0.5;
+
+  if (circleSelected) isCircle = true;
+})();
+
 function addCharacter(e) {
   const emptyArea = e.target.classList.contains("circle");
+  const isValid = !emptyArea && !thereIsAWin;
 
-  if (!emptyArea && !thereIsAWin) {
-    createCircle(e);
+  if (isValid) {
     positionsUsed.push(e.target.id);
     decideWin();
-    return;
+    
+    if (isCircle) {
+      createCircle(e);
+      return isCircle = false;
+    }
+
+    createX(e);
+    isCircle = true;
   }
 
   return;
