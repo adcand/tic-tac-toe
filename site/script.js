@@ -31,7 +31,10 @@ let winPossibilities = [
 })();
 
 function addCharacter(e) {
-  const emptyArea = e.target.classList.contains("circle");
+  const emptyArea = 
+    e.target.classList.contains("circle") || 
+    e.target.classList.contains("x");
+
   const isValid = !emptyArea && !thereIsAWin;
 
   if (isValid) {
@@ -39,22 +42,18 @@ function addCharacter(e) {
     decideWin();
     
     if (isCircle) {
-      createCircle(e);
+      createCharacter(e, "circle");
       return isCircle = false;
     }
 
-    createX(e);
+    createCharacter(e, "x");
     isCircle = true;
   }
 
   return;
 
-  function createCircle(e) {
-    e.target.classList.add("circle");
-  }
-
-  function createX(e) {
-    e.target.classList.add("x");
+  function createCharacter(e, character) {
+    e.target.classList.add(character);
   }
 }
 
