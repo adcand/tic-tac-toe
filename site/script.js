@@ -38,18 +38,18 @@ function addCharacter(e) {
   const isValid = !emptyArea && !thereIsAWin;
 
   if (isValid) {
-    positionsUsed.push(e.target.id);
-    decideWin();
-    
     if (isCircle) {
       createCharacter(e, "circle");
+      positionsUsed.push(e.target.id, "circle");
+      decideWin();
       return isCircle = false;
     }
 
     createCharacter(e, "x");
+    positionsUsed.push(e.target.id, "x");
+    decideWin();
     isCircle = true;
   }
-
   return;
 
   function createCharacter(e, character) {
