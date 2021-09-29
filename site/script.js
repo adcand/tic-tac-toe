@@ -40,16 +40,17 @@ function addCharacter(e) {
   if (isValid) {
     if (isCircle) {
       createCharacter(e, "circle");
-      positionsUsed.push(e.target.id, "circle");
+      positionsUsed.push(e.target.id);
       decideWin();
       return isCircle = false;
     }
 
     createCharacter(e, "x");
-    positionsUsed.push(e.target.id, "x");
+    positionsUsed.push(e.target.id)
     decideWin();
     isCircle = true;
   }
+
   return;
 
   function createCharacter(e, character) {
@@ -58,15 +59,28 @@ function addCharacter(e) {
 }
 
 function decideWin() {
+  let charactersOnPositions = [];
+
   winPossibilities.forEach(possibility => {
-    const win = possibility.every(option => positionsUsed.includes(option));
-    
-    if (win) {
-      winnerText.textContent = "Someone win!"
-      thereIsAWin = true;
-    };
+    const positionMatched = possibility.every(option => positionsUsed.includes(option));
+
+    if (positionMatched) {
+      possibility.forEach(pos => {
+        const item = document.getElementById(pos);
+        const getCharacterUsed = item.classList[1];
+        charactersOnPositions.push(getCharacterUsed);
+      });    
+
+      const win = charactersOnPositions.every(character => character === charactersOnPositions[0]);
+
+      if (win) {
+        const character = charactersOnPositions[0];
+        winnerText.textContent = `${character} wins!`;
+        thereIsAWin = true;
+      };
+    }
   });
 }
 
 // TODO
-// . Decide character winner
+// . Decide win when position is not matched on the first time 
