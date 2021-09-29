@@ -58,29 +58,46 @@ function addCharacter(e) {
 }
 
 function decideWin() {
-  let charactersOnPositions = [];
+  let circleCounter = 0;
+  let xCounter = 0;
+  let getCharacterUsed = [];
+  const win = 3;
 
-  winPossibilities.forEach(possibility => {
-    const positionMatched = possibility.every(option => positionsUsed.includes(option));
+  const positionMatched = winPossibilities.filter(pos => pos.every(option => positionsUsed.includes(option)));
 
-    if (positionMatched) {
-      possibility.forEach(pos => {
-        const item = document.getElementById(pos);
-        const getCharacterUsed = item.classList[1];
-        charactersOnPositions.push(getCharacterUsed);
-      });    
+  if (positionMatched.length !== 0) {
+    positionMatched.forEach(pos => {
+      pos.forEach(p => {
+        const item = document.getElementById(p);
+        getCharacterUsed.push(item.classList[1]);
+      });
+    });    
+  }
 
-      const win = charactersOnPositions.every(character => character === charactersOnPositions[0]);
-
-      if (win) {
-        const character = charactersOnPositions[0];
-        winnerText.textContent = `${character} wins!`;
-        thereIsAWin = true;
+  getCharacterUsed.map(character => {
+    if (character === "circle") {
+      circleCounter++;
+      
+      if (circleCounter === win) {
+        winnerText.textContent = "win!";
+        return thereIsAWin = true;
       };
+    } else {
+      circleCounter = 0;
     }
+
+    if (character === "x") {
+      xCounter++;
+      
+      if (xCounter === win) {
+        winnerText.textContent = `win!`;
+        return thereIsAWin = true;
+      };
+    } else {
+      xCounter = 0;
+    }   
   });
 }
 
 // TODO
-// . Decide win when position is not matched on the first time 
 // . Write better code 
