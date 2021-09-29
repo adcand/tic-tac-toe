@@ -1,9 +1,9 @@
 @use "../abstracts/index" as *;
 
-$board--clr: #B6E2D3;
-$board-hover--clr: #a5d1c6;
-$bg--clr: #FAE8E0;
-$character--clr: #D8A7B1;
+$board--clr: rgba(182, 226, 211, .4);
+$board-hover--clr: rgba(127, 192, 173, 0.4);
+$bg--clr: #f6ffe8;
+$character--clr: #fca6b7;
 $font--clr: #7a607c;
 
 :root {
@@ -26,12 +26,13 @@ $font--clr: #7a607c;
   @extend %grid-center;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: .1rem;
+  gap: .3rem;
 }
 
 .position {
   height: 100%;
   width: 100%;
+  border: solid thin #fff;
   background: $board--clr;
   cursor: pointer;
   transition: 100ms;
@@ -49,6 +50,7 @@ $font--clr: #7a607c;
     width: 4%;
     height: 50%;
     background: $character--clr;
+    animation: animate 100ms forwards;
   }
 
   @include pseudo($loc: before) {
@@ -69,6 +71,7 @@ $font--clr: #7a607c;
     border-radius: 50%;
     background: transparent;
     border: solid thick $character--clr;
+    animation: appear 100ms forwards;
   }
 }
 
@@ -78,4 +81,14 @@ $font--clr: #7a607c;
   position: absolute;
   bottom: 1rem;
   font-weight: $bold;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
