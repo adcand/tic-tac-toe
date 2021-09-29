@@ -40,13 +40,11 @@ function addCharacter(e) {
   if (isValid) {
     if (isCircle) {
       createCharacter(e, "circle");
-      positionsUsed.push(e.target.id);
       decideWin();
       return isCircle = false;
     }
 
     createCharacter(e, "x");
-    positionsUsed.push(e.target.id)
     decideWin();
     isCircle = true;
   }
@@ -55,6 +53,7 @@ function addCharacter(e) {
 
   function createCharacter(e, character) {
     e.target.classList.add(character);
+    positionsUsed.push(e.target.id);
   }
 }
 
