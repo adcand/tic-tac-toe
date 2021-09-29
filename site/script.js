@@ -84,3 +84,4 @@ function decideWin() {
 
 // TODO
 // . Decide win when position is not matched on the first time 
+// . Write better code 
