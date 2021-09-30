@@ -1,2 +1,1 @@
-# tic-tac-toe
-Web tic-tac-toe.
+![](media/img1.png)
