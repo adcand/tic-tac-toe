@@ -58,45 +58,34 @@ function addCharacter(e) {
 }
 
 function decideWin() {
-  let circleCounter = 0;
-  let xCounter = 0;
-  let getCharacterUsed = [];
-  const win = 3;
+  let charactersUsed = [];
 
-  const positionMatched = winPossibilities.filter(pos => pos.every(option => positionsUsed.includes(option)));
+  const positionMatched = 
+    winPossibilities.filter(pos => pos.every(option => positionsUsed.includes(option)));
 
   if (positionMatched.length !== 0) {
     positionMatched.forEach(pos => {
-      pos.forEach(p => {
-        const item = document.getElementById(p);
-        getCharacterUsed.push(item.classList[1]);
-      });
+      const charactersClasses = pos.map(i => document.getElementById(i).classList[1]);
+      charactersUsed.push(charactersClasses);
     });    
   }
 
-  getCharacterUsed.map(character => {
-    if (character === "circle") {
-      circleCounter++;
-      
-      if (circleCounter === win) {
-        winnerText.textContent = "win!";
-        return thereIsAWin = true;
-      };
-    } else {
-      circleCounter = 0;
-    }
+    const win = charactersUsed.filter(item => item.every(character => character === item[0]));
+    
+    if (win.length !== 0) {
+      const characterWinner = win[0][0];
 
-    if (character === "x") {
-      xCounter++;
-      
-      if (xCounter === win) {
-        winnerText.textContent = `win!`;
+      if (characterWinner === "circle") {
+        winnerText.textContent = "win!";
+        winnerText.classList.add("circle-winner");
         return thereIsAWin = true;
-      };
-    } else {
-      xCounter = 0;
-    }   
-  });
+      }
+
+
+      winnerText.textContent = "win!";
+      winnerText.classList.add("x-winner");
+      thereIsAWin = true;
+    }
 }
 
 // TODO
