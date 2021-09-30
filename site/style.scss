@@ -1,14 +1,14 @@
 @use "../abstracts/index" as *;
 
-$board--clr: #41729F;
-$board-hover--clr: #2a5279;
-$bg--clr: #5885AF;
-$character--clr: #daf9ff;
-$font--clr: #daf9ff;
+$board--clr: #f8cae54d;
+$board-hover--clr: #f0f8ab;
+$bg--clr: #FBE7C6;
+$circle--clr: #ff5f7a;
+$x--clr: #1b0a0c;
 
 :root {
   font-size: 20px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .body {
@@ -20,13 +20,13 @@ $font--clr: #daf9ff;
 }
 
 .board {
-  height: min(40%, 20rem);
-  width: min(70%, 20rem);
+  height: 20rem;
+  width: 20rem;
   background: transparent;
   @extend %grid-center;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: .3rem;
+  gap: .6rem;
 }
 
 .position {
@@ -36,6 +36,7 @@ $font--clr: #daf9ff;
   cursor: pointer;
   transition: 100ms;
   @extend %flex-center;
+  box-shadow: 0 .1rem .2rem #e63a9e4d;
 
   &:hover {
     background: $board-hover--clr;
@@ -48,8 +49,8 @@ $font--clr: #daf9ff;
   @include pseudo-both() {
     width: 4%;
     height: 50%;
-    background: $character--clr;
-    animation: appear 100ms forwards;
+    background: $x--clr;
+    animation: appear-x 200ms forwards;
   }
 
   @include pseudo($loc: before) {
@@ -69,25 +70,57 @@ $font--clr: #daf9ff;
     width: 50%;
     border-radius: 50%;
     background: transparent;
-    border: solid thick $character--clr;
-    animation: appear 100ms forwards;
+    border: solid thick $circle--clr;
+    animation: appear-circle 200ms forwards;
   }
 }
 
 .winner {
   font-size: 1rem;
-  color: $font--clr;
   position: absolute;
   bottom: 1rem;
   font-weight: $bold;
 }
 
-@keyframes appear {
+.circle-winner {
+  color: $circle--clr;
+}
+
+.x-winner {
+  color: $x--clr;
+}
+
+@keyframes appear-circle {
   from {
     opacity: 0;
+    width: 5%;
+    height: 5%;
   }
 
   to {
     opacity: 1;
+    width: 50%;
+    height: 50%;
+  }
+}
+
+@keyframes appear-x {
+  from {
+    opacity: 0;
+    width: .4%;
+    height: 5%;
+  }
+
+  to {
+    opacity: 1;
+    width: 4%;
+    height: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .board {
+    height: 45%;
+    width: 80%;
   }
 }

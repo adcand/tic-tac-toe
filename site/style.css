@@ -25,28 +25,29 @@
 .body {
   height: 100vh;
   width: 100vw;
-  background: #5885AF;
+  background: #FBE7C6;
   position: relative;
 }
 
 .board {
-  height: min(40%, 20rem);
-  width: min(70%, 20rem);
+  height: 20rem;
+  width: 20rem;
   background: transparent;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 0.3rem;
+  gap: 0.6rem;
 }
 
 .position {
   height: 100%;
   width: 100%;
-  background: #41729F;
+  background: #f8cae54d;
   cursor: pointer;
   transition: 100ms;
+  box-shadow: 0 0.1rem 0.2rem #e63a9e4d;
 }
 .position:hover {
-  background: #2a5279;
+  background: #f0f8ab;
 }
 
 .x {
@@ -57,9 +58,9 @@
   position: absolute;
   width: 4%;
   height: 50%;
-  background: #daf9ff;
-  -webkit-animation: appear 100ms forwards;
-          animation: appear 100ms forwards;
+  background: #1b0a0c;
+  -webkit-animation: appear-x 200ms forwards;
+          animation: appear-x 200ms forwards;
 }
 .x::before {
   content: "";
@@ -82,33 +83,78 @@
   width: 50%;
   border-radius: 50%;
   background: transparent;
-  border: solid thick #daf9ff;
-  -webkit-animation: appear 100ms forwards;
-          animation: appear 100ms forwards;
+  border: solid thick #ff5f7a;
+  -webkit-animation: appear-circle 200ms forwards;
+          animation: appear-circle 200ms forwards;
 }
 
 .winner {
   font-size: 1rem;
-  color: #daf9ff;
   position: absolute;
   bottom: 1rem;
   font-weight: 700;
 }
 
-@-webkit-keyframes appear {
+.circle-winner {
+  color: #ff5f7a;
+}
+
+.x-winner {
+  color: #1b0a0c;
+}
+
+@-webkit-keyframes appear-circle {
   from {
     opacity: 0;
+    width: 5%;
+    height: 5%;
   }
   to {
     opacity: 1;
+    width: 50%;
+    height: 50%;
   }
 }
 
-@keyframes appear {
+@keyframes appear-circle {
   from {
     opacity: 0;
+    width: 5%;
+    height: 5%;
   }
   to {
     opacity: 1;
+    width: 50%;
+    height: 50%;
+  }
+}
+@-webkit-keyframes appear-x {
+  from {
+    opacity: 0;
+    width: 0.4%;
+    height: 5%;
+  }
+  to {
+    opacity: 1;
+    width: 4%;
+    height: 50%;
+  }
+}
+@keyframes appear-x {
+  from {
+    opacity: 0;
+    width: 0.4%;
+    height: 5%;
+  }
+  to {
+    opacity: 1;
+    width: 4%;
+    height: 50%;
+  }
+}
+@media (max-width: 600px) {
+  .board {
+    height: 45%;
+    width: 80%;
   }
 }
