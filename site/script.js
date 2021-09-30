@@ -1,11 +1,11 @@
 const getPositions = document.querySelectorAll(".position");
 const winnerText = document.querySelector(".winner");
 const positions = Array.from(getPositions);
+const winTrack = document.querySelector("#win-track");
 
 positions.forEach(area => area.addEventListener("click", addCharacter));
 
-let isCircle = false;
-let thereIsAWin = false;
+let isCircle = thereIsAWin = false;
 let positionsUsed = [];
 let winPossibilities = [
   // Horizontal
@@ -24,18 +24,17 @@ let winPossibilities = [
 ];
 
 (function setCharacter() {
-  let randomValue = Math.random();
-  let circleSelected = randomValue > 0.5;
-
-  if (circleSelected) isCircle = true;
+  const randomValue = Math.random();
+  const circleDecided = randomValue > 0.5;
+  if (circleDecided) isCircle = true;
 })();
 
 function addCharacter(e) {
-  const emptyArea = 
+  const areaContainsCharacter = 
     e.target.classList.contains("circle") || 
     e.target.classList.contains("x");
 
-  const isValid = !emptyArea && !thereIsAWin;
+  const isValid = !areaContainsCharacter && !thereIsAWin;
 
   if (isValid) {
     if (isCircle) {
@@ -60,33 +59,31 @@ function addCharacter(e) {
 function decideWin() {
   let charactersUsed = [];
 
-  const positionMatched = 
+  const possibilityMatched = 
     winPossibilities.filter(pos => pos.every(option => positionsUsed.includes(option)));
 
-  if (positionMatched.length !== 0) {
-    positionMatched.forEach(pos => {
-      const charactersClasses = pos.map(i => document.getElementById(i).classList[1]);
+  if (possibilityMatched.length !== 0) {
+    possibilityMatched.forEach(pos => {
+      const charactersClasses = pos.map(p => document.getElementById(p).classList[1]);
       charactersUsed.push(charactersClasses);
     });    
   }
 
-    const win = charactersUsed.filter(item => item.every(character => character === item[0]));
-    
-    if (win.length !== 0) {
-      const characterWinner = win[0][0];
+  const win = charactersUsed.filter(item => item.every(character => character === item[0]));
+  
+  if (win.length !== 0) {
+    const characterWinner = win[0][0];
 
-      if (characterWinner === "circle") {
-        winnerText.textContent = "win!";
-        winnerText.classList.add("circle-winner");
-        return thereIsAWin = true;
-      }
-
-
-      winnerText.textContent = "win!";
-      winnerText.classList.add("x-winner");
-      thereIsAWin = true;
+    if (characterWinner === "circle") {
+      winnerText.textContent = "Circle wins!";
+      winnerText.classList.add("circle-winner");
+      winTrack.play();
+      return thereIsAWin = true;
     }
-}
 
-// TODO
-// . Write better code 
+    winnerText.textContent = "X wins!";
+    winnerText.classList.add("x-winner");
+    winTrack.play();
+    thereIsAWin = true;
+  }
+}
