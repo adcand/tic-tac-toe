@@ -20,8 +20,8 @@ $x--clr: #1b0a0c;
 }
 
 .board {
-  height: 20rem;
-  width: 20rem;
+  height: min(20rem, 80vw);
+  width: min(20rem, 80vw);
   background: transparent;
   @extend %grid-center;
   grid-template-columns: repeat(3, 1fr);
@@ -115,12 +115,5 @@ $x--clr: #1b0a0c;
     opacity: 1;
     width: 4%;
     height: 50%;
-  }
-}
-
-@media (max-width: 700px) {
-  .board {
-    height: min(20rem, 80vw);
-    width: min(20rem, 80vw);
   }
 }

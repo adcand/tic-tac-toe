@@ -30,8 +30,8 @@
 }
 
 .board {
-  height: 20rem;
-  width: 20rem;
+  height: min(20rem, 80vw);
+  width: min(20rem, 80vw);
   background: transparent;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -150,11 +150,5 @@
     opacity: 1;
     width: 4%;
     height: 50%;
-  }
-}
-@media (max-width: 700px) {
-  .board {
-    height: min(20rem, 80vw);
-    width: min(20rem, 80vw);
   }
 }
