@@ -30,10 +30,8 @@
 }
 
 .board {
-  height: 40vw;
-  width: 40vw;
-  max-height: 20rem;
-  max-width: 20rem;
+  height: 20rem;
+  width: 20rem;
   background: transparent;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -156,7 +154,7 @@
 }
 @media (max-width: 700px) {
   .board {
-    height: 80vw;
-    width: 80vw;
+    height: min(20rem, 80vw);
+    width: min(20rem, 80vw);
   }
 }
