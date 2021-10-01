@@ -23,17 +23,14 @@ let winPossibilities = [
   ["b3", "b5", "b7"]
 ];
 
-(function setCharacter() {
+!function setCharacter() {
   const randomValue = Math.random();
   const circleDecided = randomValue > 0.5;
   if (circleDecided) isCircle = true;
-})();
+}();
 
 function addCharacter(e) {
-  const areaContainsCharacter = 
-    e.target.classList.contains("circle") || 
-    e.target.classList.contains("x");
-
+  const areaContainsCharacter = e.target.classList.length > 1;
   const isValid = !areaContainsCharacter && !thereIsAWin;
 
   if (isValid) {
