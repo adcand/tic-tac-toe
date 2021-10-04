@@ -7,11 +7,7 @@ positions.forEach(area => area.addEventListener("click", addCharacter));
 
 let isCircle = false;
 let thereIsAWin = false;
-let isTheFirstMove = true;
-let ai = 0;
-let human = 0;
 let positionsUsed = [];
-let allAvailablePositions = [];
 let winPossibilities = [
   // Horizontal
   ["b1", "b2", "b3"], 
@@ -39,8 +35,6 @@ function addCharacter(e) {
   const isValid = !areaContainsCharacter && !thereIsAWin;
 
   if (isValid) {
-    allAvailablePositions = [];
-
     if (isCircle) {
       createCharacter(e.target, "circle");
       callFunctions();
@@ -50,9 +44,6 @@ function addCharacter(e) {
       callFunctions();
       isCircle = false;
     }
-
-    human++;
-    console.log(human, ai)
   }
 
   return;
@@ -63,45 +54,31 @@ function addCharacter(e) {
   }
 
   function callFunctions() {
-    getAllAvailablePositions();
     makeAiPlay();
     decideWin();
   }
 
   function getAllAvailablePositions() {
-    winPossibilities.forEach(pos => pos.map(p => {
-      if (document.getElementById(p).classList.length === 1) allAvailablePositions.push(p);
-    }));
+    positions.forEach(p => {
+      if (p.classList.length === 1) allAvailablePositions.push(p.id);
+    });
   }
 
   function makeAiPlay() {
-    const positionCounter = {};
-    const bestPositions = ["b1", "b3", "b7", "b9"];
-    let bestPositionAvailable = false;
-    let aiOptionsToMove = []; 
+    allAvailablePositions = [] // Restarted because a move was made
+    getAllAvailablePositions();
 
-    // The opposite character for the ai to play
+    if (allAvailablePositions.length === 0) return;
+
+    const positionSelected = randomIntFromInterval(0, allAvailablePositions.length - 1);
+    const positionToMove = document.getElementById(allAvailablePositions[positionSelected]);
+
+    // The opposite selected character for the ai to play
     isCircle ? isCircle = false : isCircle = true;
 
-    // Counts how many times each position appears on each win possibility
-    allAvailablePositions.forEach(x => positionCounter[x] = (positionCounter[x] || 0) + 1);
-
-    for (pos in positionCounter) {
-      bestPositionAvailable = bestPositions.includes(pos);
-      if (bestPositionAvailable) aiOptionsToMove.push(pos);
-    }
-
-    if (bestPositionAvailable && isTheFirstMove) {
-      const randomPosition = randomIntFromInterval(0, 2);
-      const firstAiMove = aiOptionsToMove[randomPosition];
-
-      isCircle
-        ? createCharacter(document.getElementById(firstAiMove), "circle")
-        : createCharacter(document.getElementById(firstAiMove), "x");
-      
-      ai++;
-      isTheFirstMove = false;
-    }
+    isCircle
+      ? createCharacter(positionToMove, "circle")
+      : createCharacter(positionToMove, "x"); 
 
     function randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
