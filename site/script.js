@@ -37,13 +37,15 @@ function addCharacter(e) {
   if (isValid) {
     if (isCircle) {
       createCharacter(e.target, "circle");
-      callFunctions();
+      makeAiPlay();
       isCircle = true;
     } else {
       createCharacter(e.target, "x");
-      callFunctions();
+      makeAiPlay();
       isCircle = false;
     }
+
+    decideWin();
   }
 
   return;
@@ -51,11 +53,6 @@ function addCharacter(e) {
   function createCharacter(e, character) {
     e.classList.add(character);
     positionsUsed.push(e.id);
-  }
-
-  function callFunctions() {
-    makeAiPlay();
-    decideWin();
   }
 
   function getAllAvailablePositions() {
