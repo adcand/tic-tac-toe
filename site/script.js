@@ -7,7 +7,7 @@ positions.forEach(area => area.addEventListener("click", addCharacter));
 
 let isCircle = false;
 let thereIsAWin = false;
-let isTheFirstTurn = true;
+let isTheFirstMove = true;
 let ai = 0;
 let human = 0;
 let positionsUsed = [];
@@ -42,31 +42,30 @@ function addCharacter(e) {
     allAvailablePositions = [];
 
     if (isCircle) {
-      createHumanCharacter(e, "circle");
-      human++;
-      isCircle = false;
+      createCharacter(e.target, "circle");
       callFunctions();
-      return isCircle = true;
+      isCircle = true;
+    } else {
+      createCharacter(e.target, "x");
+      callFunctions();
+      isCircle = false;
     }
 
-    createHumanCharacter(e, "x");
     human++;
-    isCircle = true;
-    callFunctions();
-    isCircle = false;
+    console.log(human, ai)
   }
 
   return;
+
+  function createCharacter(e, character) {
+    e.classList.add(character);
+    positionsUsed.push(e.id);
+  }
 
   function callFunctions() {
     getAllAvailablePositions();
     makeAiPlay();
     decideWin();
-  }
-
-  function createHumanCharacter(e, character) {
-    e.target.classList.add(character);
-    positionsUsed.push(e.target.id);
   }
 
   function getAllAvailablePositions() {
@@ -81,6 +80,9 @@ function addCharacter(e) {
     let bestPositionAvailable = false;
     let aiOptionsToMove = []; 
 
+    // The opposite character for the ai to play
+    isCircle ? isCircle = false : isCircle = true;
+
     // Counts how many times each position appears on each win possibility
     allAvailablePositions.forEach(x => positionCounter[x] = (positionCounter[x] || 0) + 1);
 
@@ -89,62 +91,50 @@ function addCharacter(e) {
       if (bestPositionAvailable) aiOptionsToMove.push(pos);
     }
 
-    if (bestPositionAvailable && isTheFirstTurn) {
+    if (bestPositionAvailable && isTheFirstMove) {
       const randomPosition = randomIntFromInterval(0, 2);
       const firstAiMove = aiOptionsToMove[randomPosition];
 
-      if (isCircle) {
-        createAiCharacter(document.getElementById(firstAiMove), "circle");
-        ai++;
-        return isTheFirstTurn = false;
-      }
-
-      createAiCharacter(document.getElementById(firstAiMove), "x");
+      isCircle
+        ? createCharacter(document.getElementById(firstAiMove), "circle")
+        : createCharacter(document.getElementById(firstAiMove), "x");
+      
       ai++;
-      isTheFirstTurn = false;
+      isTheFirstMove = false;
     }
 
     function randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
-
-    function createAiCharacter(e, character) {
-      e.classList.add(character);
-      positionsUsed.push(e.id);
-    }
   };
-}
 
-function decideWin() {
-  let charactersOnWinPossibilities = [];
+  function decideWin() {
+    let charactersOnWinPossibilities = [];
 
-  const possibilityMatched = 
-    winPossibilities.filter(pos => pos.every(option => positionsUsed.includes(option)));
+    const possibilityMatched = 
+      winPossibilities.filter(pos => pos.every(option => positionsUsed.includes(option)));
 
-  if (possibilityMatched.length !== 0) {
-    possibilityMatched.forEach(pos => {
-      const charactersClasses = pos.map(p => document.getElementById(p).classList[1]);
-      charactersOnWinPossibilities.push(charactersClasses);
-    });    
-  }
-
-  const win = 
-    charactersOnWinPossibilities.filter(item => item.every(character => character === item[0]));
-  
-  if (win.length !== 0) thereIsAWin = true;
-
-  if (thereIsAWin) {
-    const characterWinner = win[0][0];
-
-    if (characterWinner === "circle") {
-      winnerText.textContent = "Circle wins!";
-      winnerText.classList.add("circle-winner");
-      winTrack.play();
-      return thereIsAWin = true;
+    if (possibilityMatched.length !== 0) {
+      possibilityMatched.forEach(pos => {
+        const charactersClasses = pos.map(p => document.getElementById(p).classList[1]);
+        charactersOnWinPossibilities.push(charactersClasses);
+      });    
     }
 
-    winnerText.textContent = "X wins!";
-    winnerText.classList.add("x-winner");
-    winTrack.play();
+    const win = 
+      charactersOnWinPossibilities.filter(item => item.every(character => character === item[0]));
+    
+    if (win.length !== 0) thereIsAWin = true;
+
+    if (thereIsAWin) {
+      const characterWinner = win[0][0];
+      characterWinner === "circle" ? writeWinner("circle") : writeWinner("x");
+      winTrack.play();
+    }
+
+    function writeWinner(w) {
+      winnerText.textContent = `${w} wins!`;
+      winnerText.classList.add(`${w}-winner`);
+    }
   }
 }
