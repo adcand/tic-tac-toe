@@ -2,4 +2,4 @@
 
 TODO
 
-* Add AI to play against
+* Add a good AI to play against
