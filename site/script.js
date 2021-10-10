@@ -51,14 +51,31 @@ function init(e) {
   return;
 
   function makeAiPlay() {
+    const bestPositions = ["b1", "b3", "b7", "b9"];
+    let bestPositionAvailable = false;
+    let aiOptionsToMove = []; 
+
     allAvailablePositions = [] // Restarted because a move was made
     getAllAvailablePositions();
 
     if (allAvailablePositions.length === 0) return;
 
+    allAvailablePositions.forEach(pos => {
+      bestPositionAvailable = bestPositions.includes(pos);
+      if (bestPositionAvailable) aiOptionsToMove.push(pos);
+    });
+
+    if (bestPositionAvailable && isTheFirstMove) {
+      const randomPosition = randomIntFromInterval(0, 2);
+      const firstAiMove = aiOptionsToMove[randomPosition];
+
+      createCharacter(document.getElementById(firstAiMove), aiCharacter);
+      isTheFirstMove = false;
+      return;
+    } 
+    
     const positionSelected = randomIntFromInterval(0, allAvailablePositions.length - 1);
     const positionToMove = document.getElementById(allAvailablePositions[positionSelected]);
-
     createCharacter(positionToMove, aiCharacter);
 
     function randomIntFromInterval(min, max) {
