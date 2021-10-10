@@ -54,12 +54,12 @@ function init(e) {
     allAvailablePositions = []; // Restarted because a move was made
     getAllAvailablePositions();
 
+    if (thereIsAWin || allAvailablePositions.length === 0) return;
+
     const bestPositions = ["b1", "b3", "b7", "b9"]; 
     let toIntercept = [];
     let aiOptionsToMove = [];
     let positionToMove;
-
-    if (allAvailablePositions.length === 0) return;
 
     // First AI play 
 
@@ -79,7 +79,7 @@ function init(e) {
     // Next AI plays
 
     positionsUsed.forEach(p => {
-      let el = document.getElementById(p).classList[1];
+      const el = document.getElementById(p).classList[1];
       if (el === humanCharacter) toIntercept.push(p);
     });
 
@@ -87,10 +87,21 @@ function init(e) {
       toIntercept.every(o => i.includes(o))
     );
 
-    if (humanWinPossibility.length === 0) {
+    let possibilityClassNames = [];
+    
+    if (humanWinPossibility.length !== 0) {
+      humanWinPossibility[0].map(p => {
+        possibilityClassNames.push(document.getElementById(p).classList[1])
+      });  
+    }
+
+    let humanCantWin = possibilityClassNames.every(item => typeof item === "string");
+
+    if (humanWinPossibility.length === 0 || humanCantWin) {
       const positionIndex = randomIntFromInterval(0, allAvailablePositions.length - 1);
       const random = document.getElementById(allAvailablePositions[positionIndex]);
       createCharacter(random, aiCharacter);
+      humanCantWin = false;
       return; 
     }
 
