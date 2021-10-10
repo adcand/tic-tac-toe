@@ -2,5 +2,4 @@
 
 TODO
 
-* Add a good AI to play against
-* Fix bugs
+* Improve the AI
