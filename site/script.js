@@ -79,7 +79,7 @@ function init(e) {
     // Next AI plays
 
     positionsUsed.forEach(p => {
-      const el = document.getElementById(p).classList[1];
+      const el = getClassName(p);
       if (el === humanCharacter) toIntercept.push(p);
     });
 
@@ -91,11 +91,14 @@ function init(e) {
     
     if (humanWinPossibility.length !== 0) {
       humanWinPossibility[0].map(p => {
-        possibilityClassNames.push(document.getElementById(p).classList[1])
+        possibilityClassNames.push(getClassName(p))
       });  
     }
 
-    let humanCantWin = possibilityClassNames.every(item => typeof item === "string");
+    // It checks if there is an AI character on the human win possibility
+    // If so, then the possibility does not exist
+    let humanCantWin = 
+      possibilityClassNames.every(item => typeof item === "string");
 
     if (humanWinPossibility.length === 0 || humanCantWin) {
       const positionIndex = randomIntFromInterval(0, allAvailablePositions.length - 1);
@@ -106,14 +109,14 @@ function init(e) {
     }
 
     humanWinPossibility[0].forEach(p => {
-      const noCharacterOnPosition = document.getElementById(p).classList.length === 1;
+      const noCharacterOnPosition = !getClassName(p);
 
       if (noCharacterOnPosition) {
         positionToMove = document.getElementById(p);
+        createCharacter(positionToMove, aiCharacter);
       }
     });
 
-    createCharacter(positionToMove, aiCharacter);
     toIntercept = [];
 
     function randomIntFromInterval(min, max) {
@@ -141,7 +144,7 @@ function init(e) {
 
     if (possibilityMatched.length !== 0) {
       possibilityMatched.forEach(pos => {
-        const charactersClasses = pos.map(p => document.getElementById(p).classList[1]);
+        const charactersClasses = pos.map(p => getClassName(p));
         charactersOnWinPossibilities.push(charactersClasses);
       });
     }
@@ -162,5 +165,9 @@ function init(e) {
       winnerText.textContent = `${w} wins!`;
       winnerText.classList.add(`${w}-winner`);
     }
+  }
+
+  function getClassName(a) {
+    return document.getElementById(a).classList[1];
   }
 }
