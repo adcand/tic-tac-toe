@@ -55,7 +55,6 @@ function init(e) {
     getAllAvailablePositions();
 
     const bestPositions = ["b1", "b3", "b7", "b9"]; 
-    let bestPositionAvailable = false;
     let toIntercept = [];
     let aiOptionsToMove = [];
     let positionToMove;
@@ -65,11 +64,11 @@ function init(e) {
     // First AI play 
 
     allAvailablePositions.forEach(pos => {
-      bestPositionAvailable = bestPositions.includes(pos);
+      const bestPositionAvailable = bestPositions.includes(pos);
       if (bestPositionAvailable) aiOptionsToMove.push(pos);
     });
 
-    if (bestPositionAvailable && isTheFirstMove) {
+    if (isTheFirstMove) {
       const randomPosition = randomIntFromInterval(0, 2);
       positionToMove = document.getElementById(aiOptionsToMove[randomPosition]);
       createCharacter(positionToMove, aiCharacter);
