@@ -11,32 +11,32 @@ let positionsUsed = [];
 let isTheFirstMove = true;
 let winPossibilities = [
   // Horizontal
-  ["b1", "b2", "b3"], 
-  ["b4", "b5", "b6"], 
+  ["b1", "b2", "b3"],
+  ["b4", "b5", "b6"],
   ["b7", "b8", "b9"],
 
   // Vertical
-  ["b1", "b4", "b7"], 
-  ["b2", "b5", "b8"], 
+  ["b1", "b4", "b7"],
+  ["b2", "b5", "b8"],
   ["b3", "b6", "b9"],
 
   // Diagonal
-  ["b1", "b5", "b9"], 
-  ["b3", "b5", "b7"]
+  ["b1", "b5", "b9"],
+  ["b3", "b5", "b7"],
 ];
 
-!function setCharacter() {
+!(function setCharacter() {
   const randomValue = Math.random();
   const circleDecided = randomValue > 0.5;
-  
+
   if (circleDecided) {
     humanCharacter = "circle";
-    aiCharacter = "x"; 
+    aiCharacter = "x";
   } else {
     humanCharacter = "x";
     aiCharacter = "circle";
   }
-}();
+})();
 
 function init(e) {
   const areaContainsCharacter = e.target.classList.length > 1;
@@ -51,14 +51,18 @@ function init(e) {
   return;
 
   function makeAiPlay() {
-    const bestPositions = ["b1", "b3", "b7", "b9"];
-    let bestPositionAvailable = false;
-    let aiOptionsToMove = []; 
-
-    allAvailablePositions = [] // Restarted because a move was made
+    allAvailablePositions = []; // Restarted because a move was made
     getAllAvailablePositions();
 
+    const bestPositions = ["b1", "b3", "b7", "b9"]; 
+    let bestPositionAvailable = false;
+    let toIntercept = [];
+    let aiOptionsToMove = [];
+    let positionToMove;
+
     if (allAvailablePositions.length === 0) return;
+
+    // First AI play 
 
     allAvailablePositions.forEach(pos => {
       bestPositionAvailable = bestPositions.includes(pos);
@@ -67,21 +71,45 @@ function init(e) {
 
     if (bestPositionAvailable && isTheFirstMove) {
       const randomPosition = randomIntFromInterval(0, 2);
-      const firstAiMove = aiOptionsToMove[randomPosition];
-
-      createCharacter(document.getElementById(firstAiMove), aiCharacter);
+      positionToMove = document.getElementById(aiOptionsToMove[randomPosition]);
+      createCharacter(positionToMove, aiCharacter);
       isTheFirstMove = false;
       return;
-    } 
-    
-    const positionSelected = randomIntFromInterval(0, allAvailablePositions.length - 1);
-    const positionToMove = document.getElementById(allAvailablePositions[positionSelected]);
+    }
+
+    // Next AI plays
+
+    positionsUsed.forEach(p => {
+      let el = document.getElementById(p).classList[1];
+      if (el === humanCharacter) toIntercept.push(p);
+    });
+
+    let humanWinPossibility = winPossibilities.filter(i =>
+      toIntercept.every(o => i.includes(o))
+    );
+
+    if (humanWinPossibility.length === 0) {
+      const positionIndex = randomIntFromInterval(0, allAvailablePositions.length - 1);
+      const random = document.getElementById(allAvailablePositions[positionIndex]);
+      createCharacter(random, aiCharacter);
+      return; 
+    }
+
+    humanWinPossibility[0].forEach(p => {
+      const noCharacterOnPosition = document.getElementById(p).classList.length === 1;
+
+      if (noCharacterOnPosition) {
+        positionToMove = document.getElementById(p);
+      }
+    });
+
     createCharacter(positionToMove, aiCharacter);
+    toIntercept = [];
 
     function randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
-  };
+  }
 
   function createCharacter(e, character) {
     e.classList.add(character);
@@ -97,19 +125,21 @@ function init(e) {
   function decideWin() {
     let charactersOnWinPossibilities = [];
 
-    const possibilityMatched = 
-      winPossibilities.filter(pos => pos.every(option => positionsUsed.includes(option)));
+    const possibilityMatched = winPossibilities.filter(pos =>
+      pos.every(option => positionsUsed.includes(option))
+    );
 
     if (possibilityMatched.length !== 0) {
       possibilityMatched.forEach(pos => {
         const charactersClasses = pos.map(p => document.getElementById(p).classList[1]);
         charactersOnWinPossibilities.push(charactersClasses);
-      });    
+      });
     }
 
-    const win = 
-      charactersOnWinPossibilities.filter(item => item.every(character => character === item[0]));
-    
+    const win = charactersOnWinPossibilities.filter(item =>
+      item.every(character => character === item[0])
+    );
+
     if (win.length !== 0) thereIsAWin = true;
 
     if (thereIsAWin) {
