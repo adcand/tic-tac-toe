@@ -1,5 +1,9 @@
 ![](media/img1.png)
 
-TODO
+IS THE AI INVINCIBLE?
 
-* Improve the AI
+* Definitely no.
+
+COULD IT BE WORSE?
+
+* Definitely yes.
