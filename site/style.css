@@ -94,6 +94,9 @@
   bottom: 1rem;
   font-weight: 700;
 }
+.winner::first-letter {
+  text-transform: uppercase;
+}
 
 .circle-winner {
   color: #ff5f7a;

@@ -80,6 +80,10 @@ $x--clr: #1b0a0c;
   position: absolute;
   bottom: 1rem;
   font-weight: $bold;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .circle-winner {
