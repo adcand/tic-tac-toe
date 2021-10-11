@@ -7,6 +7,7 @@ positions.forEach(area => area.addEventListener("click", init));
 
 let humanCharacter, aiCharacter;
 let thereIsAWin = false;
+let allAvailablePositions;
 let positionsUsed = [];
 let isTheFirstMove = true;
 let winPossibilities = [
@@ -44,6 +45,7 @@ function init(e) {
 
   if (isValid) {
     createCharacter(e.target, humanCharacter);
+    decideWin();
     makeAiPlay();
     decideWin();
   }
@@ -51,12 +53,15 @@ function init(e) {
   return;
 
   function makeAiPlay() {
-    allAvailablePositions = []; // Restarted because a move was made
+    allAvailablePositions = [];
     getAllAvailablePositions();
 
-    if (thereIsAWin || allAvailablePositions.length === 0) return;
+    let noPositionAvailable = allAvailablePositions.length === 0;
+
+    if (thereIsAWin || noPositionAvailable) return;
 
     const bestPositions = ["b1", "b3", "b7", "b9"]; 
+
     let toIntercept = [];
     let aiOptionsToMove = [];
     let positionToMove;
@@ -78,34 +83,64 @@ function init(e) {
 
     // Next AI plays
 
+    let nextAiOptionsToMove = [];
+    let arrayIndexToRemove = [];
+    let toWin = [];
+    let filteredOptions = [];
+
     positionsUsed.forEach(p => {
-      const el = getClassName(p);
-      if (el === humanCharacter) toIntercept.push(p);
+      getClassName(p) === humanCharacter ? toIntercept.push(p): toWin.push(p);
     });
 
-    let humanWinPossibility = winPossibilities.filter(i =>
-      toIntercept.every(o => i.includes(o))
-    );
+    let humanWinPossibility =
+      winPossibilities.filter(i => toIntercept.every(pos => i.includes(pos)));
 
-    let possibilityClassNames = [];
+    let aiWinPossibility = 
+      winPossibilities.filter(i => toWin.every(pos => i.includes(pos)));
+
+    aiWinPossibility.forEach(p => {
+      p.map(a => {
+        if (getClassName(a) === humanCharacter) {
+          arrayIndexToRemove.push(aiWinPossibility.indexOf(p));
+        } 
+      });
+    });
+    
+    arrayIndexToRemove.forEach(removable => delete aiWinPossibility[removable]);
+
+    aiWinPossibility.forEach(i => {
+      if (i.length !== 0) nextAiOptionsToMove.push(i);
+    });
+
+    nextAiOptionsToMove.forEach(a => {
+      a.map(a => {
+        if (!getClassName(a)) {
+          filteredOptions.push(document.getElementById(a));
+        }
+      });
+    });
+
+    let humanPossibilityClassNames = [];
     
     if (humanWinPossibility.length !== 0) {
       humanWinPossibility[0].map(p => {
-        possibilityClassNames.push(getClassName(p))
+        humanPossibilityClassNames.push(getClassName(p));
       });  
     }
 
-    // It checks if there is an AI character on the human win possibility
-    // If so, then the possibility does not exist
     let humanCantWin = 
-      possibilityClassNames.every(item => typeof item === "string");
+      humanPossibilityClassNames.every(item => typeof item === "string");
 
-    if (humanWinPossibility.length === 0 || humanCantWin) {
-      const positionIndex = randomIntFromInterval(0, allAvailablePositions.length - 1);
-      const random = document.getElementById(allAvailablePositions[positionIndex]);
-      createCharacter(random, aiCharacter);
-      humanCantWin = false;
-      return; 
+    if (humanCantWin) {
+      if (nextAiOptionsToMove.length !== 0) {
+        createCharacter(filteredOptions[0], aiCharacter);
+      } else {
+        const positionIndex = randomIntFromInterval(0, allAvailablePositions.length - 1);
+        const random = document.getElementById(allAvailablePositions[positionIndex]);
+        createCharacter(random, aiCharacter);
+      }
+
+      return;
     }
 
     humanWinPossibility[0].forEach(p => {
@@ -116,8 +151,6 @@ function init(e) {
         createCharacter(positionToMove, aiCharacter);
       }
     });
-
-    toIntercept = [];
 
     function randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
@@ -167,7 +200,7 @@ function init(e) {
     }
   }
 
-  function getClassName(a) {
-    return document.getElementById(a).classList[1];
+  function getClassName(id) {
+    return document.getElementById(id).classList[1];
   }
 }
