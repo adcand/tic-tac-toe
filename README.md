@@ -1,9 +1,9 @@
 ![](media/img1.png)
 
-### IS THE AI INVINCIBLE?
+### Is The AI Invincible?
 
 * Definitely no.
 
-### COULD IT BE WORSE?
+### Could It Be Worse?
 
 * Definitely yes.
