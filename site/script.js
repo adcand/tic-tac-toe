@@ -1,6 +1,5 @@
-const getPositions = document.querySelectorAll(".position");
+const positions = document.querySelectorAll(".position");
 const winnerText = document.querySelector(".winner");
-const positions = Array.from(getPositions);
 const winTrack = document.querySelector("#win-track");
 
 positions.forEach(area => area.addEventListener("click", init));
@@ -56,25 +55,24 @@ function init(e) {
     allAvailablePositions = [];
     getAllAvailablePositions();
 
-    let noPositionAvailable = allAvailablePositions.length === 0;
+    const noPositionAvailable = allAvailablePositions.length === 0;
 
     if (thereIsAWin || noPositionAvailable) return;
 
     const bestPositions = ["b1", "b3", "b7", "b9"]; 
 
-    let toIntercept = [];
     let aiOptionsToMove = [];
     let positionToMove;
 
     // First AI play 
 
-    allAvailablePositions.forEach(pos => {
-      const bestPositionAvailable = bestPositions.includes(pos);
-      if (bestPositionAvailable) aiOptionsToMove.push(pos);
-    });
-
     if (isTheFirstMove) {
-      const randomPosition = randomIntFromInterval(0, 2);
+      allAvailablePositions.forEach(pos => {
+        const bestPositionAvailable = bestPositions.includes(pos);
+        if (bestPositionAvailable) aiOptionsToMove.push(pos);
+      });
+
+      const randomPosition = randomIntFromInterval(0, aiOptionsToMove.length - 1);
       positionToMove = document.getElementById(aiOptionsToMove[randomPosition]);
       createCharacter(positionToMove, aiCharacter);
       isTheFirstMove = false;
@@ -84,9 +82,10 @@ function init(e) {
     // Next AI plays
 
     let nextAiOptionsToMove = [];
-    let arrayIndexToRemove = [];
+    let toIntercept = [];
     let toWin = [];
-    let filteredOptions = [];
+    let arrayIndexToRemove = [];
+    let emptyBoardPositions = [];
 
     positionsUsed.forEach(p => {
       getClassName(p) === humanCharacter ? toIntercept.push(p): toWin.push(p);
@@ -101,6 +100,7 @@ function init(e) {
     aiWinPossibility.forEach(p => {
       p.map(a => {
         if (getClassName(a) === humanCharacter) {
+          // A human character disrupts ai win possibility
           arrayIndexToRemove.push(aiWinPossibility.indexOf(p));
         } 
       });
@@ -108,6 +108,7 @@ function init(e) {
     
     arrayIndexToRemove.forEach(removable => delete aiWinPossibility[removable]);
 
+    // Now only real win possibilities to the ai
     aiWinPossibility.forEach(i => {
       if (i.length !== 0) nextAiOptionsToMove.push(i);
     });
@@ -115,7 +116,7 @@ function init(e) {
     nextAiOptionsToMove.forEach(a => {
       a.map(a => {
         if (!getClassName(a)) {
-          filteredOptions.push(document.getElementById(a));
+          emptyBoardPositions.push(document.getElementById(a));
         }
       });
     });
@@ -128,21 +129,24 @@ function init(e) {
       });  
     }
 
+    // An ai character disrupts human win possibility
     let humanCantWin = 
       humanPossibilityClassNames.every(item => typeof item === "string");
 
     if (humanCantWin) {
       if (nextAiOptionsToMove.length !== 0) {
-        createCharacter(filteredOptions[0], aiCharacter);
+        createCharacter(emptyBoardPositions[0], aiCharacter);
       } else {
-        const positionIndex = randomIntFromInterval(0, allAvailablePositions.length - 1);
-        const random = document.getElementById(allAvailablePositions[positionIndex]);
-        createCharacter(random, aiCharacter);
+        // Chooses a random position on the board
+        positionToMove = randomIntFromInterval(0, allAvailablePositions.length - 1);
+        const nextRandomPosition = document.getElementById(allAvailablePositions[positionToMove]);
+        createCharacter(nextRandomPosition, aiCharacter);
       }
 
       return;
     }
 
+    // Disrupt human win possibility
     humanWinPossibility[0].forEach(p => {
       const noCharacterOnPosition = !getClassName(p);
 
