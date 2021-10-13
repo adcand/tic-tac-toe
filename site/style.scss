@@ -1,10 +1,28 @@
 @use "../abstracts/index" as *;
 
+// Style 1 
 $board--clr: #f8cae54d;
 $board-hover--clr: #f0f8ab;
+$board-shadow--clr: #e63a9e4d;
 $bg--clr: #FBE7C6;
 $circle--clr: #ff5f7a;
 $x--clr: #1b0a0c;
+
+// Style 2
+// $board--clr: #3a5472;
+// $board-hover--clr: #e6d2ffb4;
+// $board-shadow--clr: #1f3957;
+// $bg--clr: #415a77;
+// $circle--clr: #ebebeb;
+// $x--clr: #121c29;
+
+// Style 3 
+// $board--clr: #c76466;
+// $board-hover--clr: #52a025be;
+// $board-shadow--clr: #682f2f;
+// $bg--clr: #fce9b9;
+// $circle--clr: #c4eb6acb;
+// $x--clr: #e7e1d2;
 
 :root {
   font-size: 20px;
@@ -36,7 +54,7 @@ $x--clr: #1b0a0c;
   cursor: pointer;
   transition: 100ms;
   @extend %flex-center;
-  box-shadow: 0 .1rem .2rem #e63a9e4d;
+  box-shadow: 0 .1rem .2rem $board-shadow--clr;
 
   &:hover {
     background: $board-hover--clr;
