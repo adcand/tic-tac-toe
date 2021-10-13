@@ -9,6 +9,7 @@ let thereIsAWin = false;
 let allAvailablePositions;
 let positionsUsed = [];
 let isTheFirstMove = true;
+let aiInterceptCounter = 0;
 let winPossibilities = [
   // Horizontal
   ["b1", "b2", "b3"],
@@ -64,7 +65,7 @@ function init(e) {
     let aiOptionsToMove = [];
     let positionToMove;
 
-    // First AI play 
+    // First turn 
 
     if (isTheFirstMove) {
       allAvailablePositions.forEach(pos => {
@@ -79,7 +80,7 @@ function init(e) {
       return;
     }
 
-    // Next AI plays
+    // Next turns
 
     let nextAiOptionsToMove = [];
     let toIntercept = [];
@@ -90,6 +91,20 @@ function init(e) {
     positionsUsed.forEach(p => {
       getClassName(p) === humanCharacter ? toIntercept.push(p): toWin.push(p);
     });
+
+    // If, in your two last turns, you chose two positions that can lead you to a win, the ai will
+    // find the win possibility
+    switch (aiInterceptCounter) {
+      case 1: 
+        toIntercept.shift();
+        break;
+      case 2: 
+        toIntercept.splice(0, 2);
+        break;
+      case 3:
+        toIntercept.splice(0, 3);
+        break;
+    }
 
     let humanWinPossibility =
       winPossibilities.filter(i => toIntercept.every(pos => i.includes(pos)));
@@ -153,6 +168,7 @@ function init(e) {
       if (noCharacterOnPosition) {
         positionToMove = document.getElementById(p);
         createCharacter(positionToMove, aiCharacter);
+        aiInterceptCounter++;
       }
     });
 
