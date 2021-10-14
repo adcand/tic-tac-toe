@@ -1,40 +1,46 @@
 @use "../abstracts/index" as *;
 
-// Style 1 
-$board--clr: #f8cae54d;
-$board-hover--clr: #f0f8ab;
-$board-shadow--clr: #e63a9e4d;
-$bg--clr: #FBE7C6;
-$circle--clr: #ff5f7a;
-$x--clr: #1b0a0c;
-
-// Style 2
-// $board--clr: #3a5472;
-// $board-hover--clr: #e6d2ffb4;
-// $board-shadow--clr: #1f3957;
-// $bg--clr: #415a77;
-// $circle--clr: #ebebeb;
-// $x--clr: #121c29;
-
-// Style 3 
-// $board--clr: #c76466;
-// $board-hover--clr: #52a025be;
-// $board-shadow--clr: #682f2f;
-// $bg--clr: #fce9b9;
-// $circle--clr: #c4eb6acb;
-// $x--clr: #e7e1d2;
-
 :root {
+  --board--clr: #f8cae54d;
+  --board-hover--clr: #f0f8ab;
+  --board-shadow--clr: #e63a9e4d;
+  --bg--clr: #FBE7C6;
+  --circle--clr: #ff5f7a;
+  --x--clr: #1b0a0c;
+  --button--clr: #f07eb7;
+
   font-size: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.darkmode {
+  --board--clr: #142038;
+  --board-hover--clr: #020c20a8;
+  --board-shadow--clr: #5d83af;
+  --bg--clr: #0f1a30;
+  --circle--clr: #ece0f5;
+  --x--clr: #6abafc;
+  --button--clr: #e7afe7;
 }
 
 .body {
   height: 100vh;
   width: 100vw;
-  background: $bg--clr;
+  background: var(--bg--clr);
   @extend %flex-center;
   position: relative;
+}
+
+.theme-button {
+  all: unset;
+  background: var(--button--clr);
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
 }
 
 .board {
@@ -50,14 +56,14 @@ $x--clr: #1b0a0c;
 .position {
   height: 100%;
   width: 100%;
-  background: $board--clr;
+  background: var(--board--clr);
   cursor: pointer;
   transition: 100ms;
   @extend %flex-center;
-  box-shadow: 0 .1rem .2rem $board-shadow--clr;
+  box-shadow: 0 .07rem .15rem var(--board-shadow--clr);
 
   &:hover {
-    background: $board-hover--clr;
+    background: var(--board-hover--clr);
   }
 }
 
@@ -67,7 +73,7 @@ $x--clr: #1b0a0c;
   @include pseudo-both() {
     width: 4%;
     height: 50%;
-    background: $x--clr;
+    background: var(--x--clr);
     animation: appear-x 200ms forwards;
   }
 
@@ -88,7 +94,7 @@ $x--clr: #1b0a0c;
     width: 50%;
     border-radius: 50%;
     background: transparent;
-    border: solid thick $circle--clr;
+    border: solid thick var(--circle--clr);
     animation: appear-circle 200ms forwards;
   }
 }
@@ -105,11 +111,11 @@ $x--clr: #1b0a0c;
 }
 
 .circle-winner {
-  color: $circle--clr;
+  color: var(--circle--clr);
 }
 
 .x-winner {
-  color: $x--clr;
+  color: var(--x--clr);
 }
 
 @keyframes appear-circle {

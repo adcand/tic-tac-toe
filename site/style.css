@@ -18,15 +18,44 @@
 }
 
 :root {
+  --board--clr: #f8cae54d;
+  --board-hover--clr: #f0f8ab;
+  --board-shadow--clr: #e63a9e4d;
+  --bg--clr: #FBE7C6;
+  --circle--clr: #ff5f7a;
+  --x--clr: #1b0a0c;
+  --button--clr: #f07eb7;
   font-size: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.darkmode {
+  --board--clr: #142038;
+  --board-hover--clr: #020c20a8;
+  --board-shadow--clr: #5d83af;
+  --bg--clr: #0f1a30;
+  --circle--clr: #ece0f5;
+  --x--clr: #6abafc;
+  --button--clr: #e7afe7;
 }
 
 .body {
   height: 100vh;
   width: 100vw;
-  background: #FBE7C6;
+  background: var(--bg--clr);
   position: relative;
+}
+
+.theme-button {
+  all: unset;
+  background: var(--button--clr);
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
 }
 
 .board {
@@ -41,13 +70,13 @@
 .position {
   height: 100%;
   width: 100%;
-  background: #f8cae54d;
+  background: var(--board--clr);
   cursor: pointer;
   transition: 100ms;
-  box-shadow: 0 0.1rem 0.2rem #e63a9e4d;
+  box-shadow: 0 0.07rem 0.15rem var(--board-shadow--clr);
 }
 .position:hover {
-  background: #f0f8ab;
+  background: var(--board-hover--clr);
 }
 
 .x {
@@ -58,7 +87,7 @@
   position: absolute;
   width: 4%;
   height: 50%;
-  background: #1b0a0c;
+  background: var(--x--clr);
   -webkit-animation: appear-x 200ms forwards;
           animation: appear-x 200ms forwards;
 }
@@ -83,7 +112,7 @@
   width: 50%;
   border-radius: 50%;
   background: transparent;
-  border: solid thick #ff5f7a;
+  border: solid thick var(--circle--clr);
   -webkit-animation: appear-circle 200ms forwards;
           animation: appear-circle 200ms forwards;
 }
@@ -99,11 +128,11 @@
 }
 
 .circle-winner {
-  color: #ff5f7a;
+  color: var(--circle--clr);
 }
 
 .x-winner {
-  color: #1b0a0c;
+  color: var(--x--clr);
 }
 
 @-webkit-keyframes appear-circle {
