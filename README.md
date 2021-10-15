@@ -2,8 +2,4 @@
 
 ### Is The AI Invincible?
 
-* Definitely no.
-
-### Could It Be Worse?
-
-* Definitely yes.
+* Definitely not.
